@@ -1,7 +1,7 @@
 package dev.waamir.task_manager.models;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 import dev.waamir.task_manager.enums.TaskStatus;
 import jakarta.persistence.Column;
@@ -26,13 +26,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tasks")
+@Table(name = "tasks", schema = "task_manager_db")
 @Entity(name = "Task")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "task_id")
+    @Column(name = "task_id", nullable = false)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -54,5 +54,5 @@ public class Task {
         joinColumns = @JoinColumn(name = "task_id"), 
         inverseJoinColumns = @JoinColumn(name = "person_id") 
     )
-    private ArrayList<Person> people;
+    private List<Person> people;
 }

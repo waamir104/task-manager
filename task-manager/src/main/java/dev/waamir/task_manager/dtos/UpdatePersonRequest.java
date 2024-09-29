@@ -1,6 +1,5 @@
 package dev.waamir.task_manager.dtos;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -12,11 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDto {
+public class UpdatePersonRequest {
 
     private Long id;
     private String name;
-    private LocalDateTime deadLine;
-    private String status;
-    private List<PersonDto> people;
+    private Integer age;
+    private List<UpdateSkillRequest> skills;
 }

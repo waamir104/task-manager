@@ -1,6 +1,6 @@
 package dev.waamir.task_manager.models;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,18 +18,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "skills")
+@Table(name = "skills", schema = "task_manager_db")
 @Entity(name = "Skill")
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "skill_id")
+    @Column(name = "skill_id", nullable = false)
     private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "skills")
-    private ArrayList<Person> people;
+    private List<Person> people;
 }

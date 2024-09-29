@@ -8,15 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDto {
-
-    private Long id;
+public class CreateTaskRequest {
+    
     private String name;
     private LocalDateTime deadLine;
     private String status;
-    private List<PersonDto> people;
+    private List<CreatePersonRequest> people;
+    private String machineUUID;
 }
