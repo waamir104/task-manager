@@ -33,15 +33,15 @@
 	<profiles>
 		<profile>
 			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<SPRING_PROFILE>dev</SPRING_PROFILE>
 			</properties>
 		</profile>
 		<profile>
 			<id>prod</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<SPRING_PROFILE>prod</SPRING_PROFILE>
 			</properties>

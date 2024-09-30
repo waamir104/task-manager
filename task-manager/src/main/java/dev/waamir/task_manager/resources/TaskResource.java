@@ -67,9 +67,10 @@ public class TaskResource {
     
     @GetMapping("/list/{uuid}")
     public ResponseEntity<Page<TaskDto>> listTasks(
-        @PathVariable String uuid,
-        @PageableDefault Pageable pagination) {
-        Page<Task> entities = taskRepository.findAll(pagination);
+    @PathVariable String uuid,
+    @PageableDefault Pageable pagination) {
+        Machine machine = machineRepository.findByUuid(uuid).orElse(null);
+        Page<Task> entities = taskRepository.findAllByMachine(machine, pagination);
         Page<TaskDto> dtos = entities.map(mapper::taskToDto);
         return ResponseEntity.status(HttpStatus.OK)
             .body(
@@ -109,6 +110,7 @@ public class TaskResource {
             .people(createdPeople)
             .status(TaskStatus.PENDING)
             .build();
+        task = taskRepository.save(task);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(
                 mapper.taskToDto(task)
@@ -131,7 +133,7 @@ public class TaskResource {
         );
         taskToUpdate = taskRepository.save(taskToUpdate);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(
+            .body( 
                 mapper.taskToDto(taskToUpdate)
             );
     }

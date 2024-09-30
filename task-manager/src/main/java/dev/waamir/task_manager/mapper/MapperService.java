@@ -1,5 +1,8 @@
 package dev.waamir.task_manager.mapper;
 
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.waamir.task_manager.dtos.MachineDto;
@@ -12,11 +15,21 @@ import dev.waamir.task_manager.models.Machine;
 import dev.waamir.task_manager.models.Person;
 import dev.waamir.task_manager.models.Skill;
 import dev.waamir.task_manager.models.Task;
+import dev.waamir.task_manager.repositories.IPersonJPARepository;
+import dev.waamir.task_manager.repositories.ISkillJPARepository;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @NoArgsConstructor
+@Slf4j
 public class MapperService {
+
+    @Autowired
+    private IPersonJPARepository personRepository;
+
+    @Autowired
+    private ISkillJPARepository skillRepository;
 
     public PersonDto personToDto(Person entity) {
         PersonDto dto = PersonDto.builder()
@@ -66,7 +79,20 @@ public class MapperService {
     }
 
     public Person updateToPerson(UpdatePersonRequest request) {
-        Person entity = Person.builder()
+        Person entity;
+        if (request.getId() == null) {
+            entity = Person.builder()
+                .age(request.getAge())
+                .name(request.getName())
+                .skills(
+                    request.getSkills()
+                        .stream()
+                        .map(this::updateToSkill)
+                        .toList()
+                )
+                .build();
+        } else {
+            entity = Person.builder()
             .id(request.getId())
             .age(request.getAge())
             .name(request.getName())
@@ -75,16 +101,27 @@ public class MapperService {
                     .stream()
                     .map(this::updateToSkill)
                     .toList()
-            )
-            .build();
+                    )
+                    .build();
+                }
+        entity = personRepository.save(entity);
         return entity;
     }
     
     public Skill updateToSkill(UpdateSkillRequest request) {
-        Skill entity = Skill.builder()
-            .id(request.getId())
-            .name(request.getName())
-            .build();
+        Skill entity;
+        if (request.getId() == null) {
+            log.info("Ingreso id null");
+            entity = Skill.builder()
+                .name(request.getName())
+                .build();
+            entity = skillRepository.save(entity);
+        } else {
+            entity = Skill.builder()
+                .id(request.getId())
+                .name(request.getName())
+                .build();
+        }
         return entity;
     }
 }
